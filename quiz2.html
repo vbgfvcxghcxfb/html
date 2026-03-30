@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8">
+  <title>Quiz: Czy nadajesz się na mat-fiz-inf?</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #eef2f7;
+      padding: 20px;
+    }
+    .quiz {
+      max-width: 600px;
+      margin: auto;
+      background: white;
+      padding: 25px;
+      border-radius: 12px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    }
+    h2 {
+      margin-bottom: 15px;
+    }
+    button {
+      display: block;
+      width: 100%;
+      margin: 8px 0;
+      padding: 10px;
+      border: none;
+      border-radius: 6px;
+      background: #4a90e2;
+      color: white;
+      cursor: pointer;
+    }
+    button:hover {
+      background: #357abd;
+    }
+  </style>
+</head>
+<body>
+
+<div class="quiz">
+  <h2 id="question"></h2>
+  <div id="answers"></div>
+</div>
+
+<script>
+  const quiz = [
+    {
+      question: "1. Co robisz gdy widzisz trudne zadanie z matematyki?",
+      answers: [
+        { text: "Próbuję je rozwiązać samodzielnie", points: 2 },
+        { text: "Szukam wskazówki i próbuję dalej", points: 1 },
+        { text: "Odkładam to na później", points: 0 }
+      ]
+    },
+    {
+      question: "2. Jak reagujesz na błędy w kodzie?",
+      answers: [
+        { text: "Debuguję aż znajdę problem", points: 2 },
+        { text: "Szukam rozwiązania w internecie", points: 1 },
+        { text: "Denerwuję się i rezygnuję", points: 0 }
+      ]
+    },
+    {
+      question: "3. Czy lubisz logiczne zagadki?",
+      answers: [
+        { text: "Tak, bardzo!", points: 2 },
+        { text: "Czasami", points: 1 },
+        { text: "Nie", points: 0 }
+      ]
+    },
+    {
+      question: "4. Jak podchodzisz do fizyki?",
+      answers: [
+        { text: "Jest ciekawa i chcę ją zrozumieć", points: 2 },
+        { text: "Jest trudna, ale da się przeżyć", points: 1 },
+        { text: "Nie znoszę jej", points: 0 }
+      ]
+    },
+    {
+      question: "5. Ile czasu potrafisz spędzić nad jednym problemem?",
+      answers: [
+        { text: "Nawet kilka godzin", points: 2 },
+        { text: "Kilka minut", points: 1 },
+        { text: "Prawie wcale", points: 0 }
+      ]
+    }
+  ];
+
+  let current = 0;
+  let score = 0;
+
+  function loadQuestion() {
+    const q = quiz[current];
+    document.getElementById("question").innerText = q.question;
+
+    const answersDiv = document.getElementById("answers");
+    answersDiv.innerHTML = "";
+
+    q.answers.forEach(answer => {
+      const btn = document.createElement("button");
+      btn.innerText = answer.text;
+      btn.onclick = () => selectAnswer(answer.points);
+      answersDiv.appendChild(btn);
+    });
+  }
+
+  function selectAnswer(points) {
+    score += points;
+    current++;
+
+    if (current < quiz.length) {
+      loadQuestion();
+    } else {
+      showResult();
+    }
+  }
+
+  function showResult() {
+    let result = "";
+
+    if (score >= 8) {
+      result = "🔥 Idealny kandydat na mat-fiz-inf!";
+    } else if (score >= 5) {
+      result = "👍 Masz potencjał — warto spróbować!";
+    } else {
+      result = "🤔 To może nie być najlepszy profil dla Ciebie.";
+    }
+
+    document.querySelector(".quiz").innerHTML =
+      `<h2>Koniec quizu!</h2>
+       <p>Twój wynik: ${score}/10</p>
+       <h3>${result}</h3>`;
+  }
+
+  loadQuestion();
+</script>
+
+</body>
+</html>
